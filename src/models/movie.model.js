@@ -16,6 +16,4 @@ const movieSchema =new Schema(
     }
 );
 
-//const Movie 
 module.exports = model('movies', movieSchema);
-//module.exports = Movie;

@@ -6,8 +6,11 @@ require('./database');
 
 const app = express();
 
+//config port 
 app.set('port', 3000);
 
+
+//config multer
 const storage = multer.diskStorage({
     destination: path.join(__dirname, 'public/uploads'),
     filename(req, file, cb) {
@@ -15,13 +18,18 @@ const storage = multer.diskStorage({
     }
 });
 
+//middlewares 
+
 app.use(express.static(path.join(__dirname,'/public')))
 app.use(multer({ storage: storage }).single('imgMovie'));
 app.use(cors());
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
 
-app.use(require('./routes/routes'));
+//routes
+app.use('/social-movies', require('./routes/routes'));
+
+//Start server
 app.listen(app.get('port') );
 
 

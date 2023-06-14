@@ -17,8 +17,13 @@ const createUser =  (req, res) => {
     user.save().then(res.json({ message: 'User created' }));
 }
 
+const deleteUser = (req, res) => {
+    const auxId = req.params.idUser;
+    User.deleteOne({ _id: auxId }).then(res.json({ message: 'user delete' })).catch(error => {console.log(error.message)});
+}
 
 module.exports = {
     getUsers,
-    createUser
+    createUser,
+    deleteUser
 }

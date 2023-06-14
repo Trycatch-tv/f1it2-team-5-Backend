@@ -41,10 +41,11 @@ const updateMovie = async (req, res) => {
     ).then(res.json({ Message: 'Movie Update' })).catch((message = 'error') => { res.json({ Message: message }) });
 }
 
-const deleteMovie = (req, res) => {
-    const auxId = req.params;
+const deleteMovie = async (req, res) => {
+    const auxId = req.params.idMovie;
     console.log(auxId);
-    Movie.findByIdAndDelete({ _id: auxId }).then(res.json({ message: 'Delete movie' }));
+
+    await Movie.deleteOne({ _id: auxId }).then(res.json({ message: 'Delete movie' })).catch(error => {console.log(error.message)});
 }
 
 
