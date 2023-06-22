@@ -1,18 +1,16 @@
-const Movies = require('../models/movieModel')
-//const fs = require('fs-extra') //modulo deleiminacion
-const fs = require('fs')
+const Movie = require('../models/movieModel')
+const {unlink} = require('fs-extra') //modulo deleiminacion
 const path = require('path');
-var filepath ='./public/'
 
-const getMovi = async (req, res) => {
-    const peliculas = await Movies.find()
-    res.json(peliculas)
+const getMovies = async (req, res) => {
+    const allMovies = await Movie.find();
+    res.json(allMovies);
 }
 
 const createMovie = async (req, res) => {
     const { movie_title, movie_genero, movie_director, movie_year, movie_category, movie_synopsis } = req.body;
     const imgMovie= "uploads/" + req.file.filename;
-    const movie = new Movies({
+    const movie = new Movie({
         movie_title: movie_title,
         movie_genero: movie_genero,
         movie_director: movie_director,
@@ -24,9 +22,9 @@ const createMovie = async (req, res) => {
     await movie.save();
     res.json({ message: 'Movies created' });
 }
-const getMovies = async (req, res) => {
-    const pelicula = await Movies.findById(req.params.id)
-    res.json(pelicula);
+const getMovie = async (req, res) => {
+    const movie = await Movie.findById(req.params.id)
+    res.json(movie);
 }
 
 
@@ -34,7 +32,7 @@ const getMovies = async (req, res) => {
 const updateMovie = async (req, res) => {
     const imgMovie = 'uploads/ '+ req.file.originalname;
     const { movie_title, movie_genero, movie_director, movie_year, movie_category, movie_synopsis } = req.body;
-    await Movies.findByIdAndUpdate(req.params.id, {
+    await Movie.findByIdAndUpdate(req.params.id, {
         movie_title,
         movie_genero,
         movie_director,
@@ -47,14 +45,15 @@ const updateMovie = async (req, res) => {
     res.json({ Message: 'Movie Update' });
 }
 const deleteMovie= async(req, res)=>{
-    movies = await  Movies.findByIdAndDelete(req.params.id)
+    const movie = await Movie.findByIdAndDelete(req.params.id);
+    unlink(path.resolve('f1it2-team-5-Backend/src/public' + movie.imgMovie));
     res.json({message: 'La pelicula a sido eliminada'})
     
 }
 
 
 module.exports = {
-    getMovi,
+    getMovie,
     getMovies,
     createMovie,
     updateMovie,

@@ -1,15 +1,15 @@
 const { Router } = require('express');
-const { getMovi, getMovies, createMovie, updateMovie, deleteMovie } = require('../controllers/movieController');
-const { getUsers, createUser, deleteUser } = require('../controllers/user-controller');
+const { getMovie, getMovies, createMovie, updateMovie, deleteMovie } = require('../controllers/movieController');
+const { getUsers, createUser, singIn, deleteUser } = require('../controllers/user-controller');
 const router = Router();
 
 //Peliculas
 router.route('/')
-     .get(getMovi)
+     .get(getMovies)
      .post(createMovie)
 
 router.route('/:id')
-     .get(getMovies)
+     .get(getMovie)
      .put(updateMovie)
      .delete(deleteMovie)
 
@@ -17,6 +17,7 @@ router.route('/:id')
 //Usuarios
 router.get('/users', getUsers);
 router.post('/users/register', createUser);
+router.post('/users/login', singIn);
 router.delete('/users/:idUser', deleteUser);
 
 /*router.get('/', getMovies);
